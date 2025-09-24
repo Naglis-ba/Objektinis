@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <bits/stdc++.h>
+#include <fstream>
 
 using std::cout;
 using std::cin;
@@ -57,6 +58,14 @@ double skaiciuotiMediana(vector<int> paz) {
     else
         return paz[n/2];
 }
+
+void SkaiciuotiGalutinius(Studentas& stud) {
+    double vid = skaiciuotiVidurki(stud.paz);
+    double med = skaiciuotiMediana(stud.paz);
+    stud.galVid = 0.4 * vid + 0.6 * stud.egz;
+    stud.galMed = 0.4 * med + 0.6 * stud.egz;
+}
+
 void generuotiAtsitiktinai(Studentas& stud) {
     int n;
     cout << "Kiek namu darbu pazymiu generuoti? ";
@@ -92,6 +101,33 @@ void IvestiPazymius(Studentas& stud){
     }
 }
 
+
+void nuskaitytiIsFailo(vector<Studentas>& studentai, const string& failoVardas) {
+    std::ifstream in(failoVardas);
+    if (!in) {
+        cout << "Nepavyko atidaryti failo: " << failoVardas << endl;
+        return;
+    }
+    string eilute;
+    std::getline(in, eilute); // skip header
+
+    while (std::getline(in, eilute)) {
+        std::istringstream iss(eilute);
+        Studentas stud;
+        iss >> stud.vardas >> stud.pavarde;
+        int skaicius;
+        vector<int> paz;
+        while (iss >> skaicius) paz.push_back(skaicius);
+        if (paz.empty()) continue;
+        stud.egz = paz.back();
+        paz.pop_back();
+        stud.paz = paz;
+        SkaiciuotiGalutinius(stud);
+        studentai.push_back(stud);
+    }
+    in.close();
+}
+
 int main() {
     srand(static_cast<unsigned>(time(0)));
     vector<Studentas> studentai;
@@ -100,6 +136,7 @@ int main() {
         cout << "\nPasirinkite veiksma:\n";
         cout << "1 - Ivesti studento duomenis rankiniu budu\n";
         cout << "2 - Generuoti studento duomenis atsitiktinai\n";
+        cout << "3 - Nuskaityti studentus is failo\n";
         cout << "0 - Baigti/Rodyti lentelę\n";
         cout << "Jusu pasirinkimas: ";
         int pasirinkimas;
@@ -107,6 +144,11 @@ int main() {
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         if (pasirinkimas == 0) break;
+
+        if (pasirinkimas == 3) {
+            nuskaitytiIsFailo(studentai, "studentai10000.txt");
+            continue;
+        }
 
         Studentas stud;
         cout << "Iveskite studento varda: ";
@@ -129,11 +171,7 @@ int main() {
             continue;
         }
         
-        double vid = skaiciuotiVidurki(stud.paz);
-        double med = skaiciuotiMediana(stud.paz);
-        stud.galVid = 0.4 * vid + 0.6 * stud.egz;
-        stud.galMed = 0.4 * med + 0.6 * stud.egz;
-        
+        SkaiciuotiGalutinius(stud);
         studentai.push_back(stud);
     }
     cout << setw(20) << left << "Vardas"
