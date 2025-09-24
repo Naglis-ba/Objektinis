@@ -41,6 +41,14 @@ void Sort(vector<int>& arr) {
     }
 }
 
+void RikiuotiStudentus(vector<Studentas>& studentai) {
+    std::sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
+        if (a.pavarde == b.pavarde)
+            return a.vardas < b.vardas;
+        return a.pavarde < b.pavarde;
+    });
+}
+
 double skaiciuotiVidurki(const vector<int>& paz) {
     if (paz.empty()) return 0.0;
     int suma = 0;
@@ -180,6 +188,8 @@ int main() {
          << setw(25) << left << "Galutinis (Med.)" << endl;
     cout << string(90, '-') << endl;
 
+    RikiuotiStudentus(studentai);
+    
     for (const auto& stud : studentai) {
         cout << setw(20) << left << stud.vardas
              << setw(20) << left << stud.pavarde
