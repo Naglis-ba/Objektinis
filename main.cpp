@@ -57,32 +57,77 @@ double skaiciuotiMediana(vector<int> paz) {
     else
         return paz[n/2];
 }
+void generuotiAtsitiktinai(Studentas& stud) {
+    int n;
+    cout << "Kiek namu darbu pazymiu generuoti? ";
+    cin >> n;
+    stud.paz.clear();
+    for (int i = 0; i < n; i++) {
+        stud.paz.push_back(rand() % 10 + 1);
+    }
+    stud.egz = rand() % 10 + 1;
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+void IvestiPazymius(Studentas& stud){
+    cout << "Iveskite namu darbu pazymius (du ENTER is eiles baigia ivedima):" << endl;
+    string paz_str;
+    int laik_paz;
+    int tusciu_eiluciu = 0;
+    stud.paz.clear();
+    while (true) {
+        std::getline(cin, paz_str);
+        if (paz_str.empty()) {
+            tusciu_eiluciu++;
+            if (tusciu_eiluciu == 2) break;
+            continue;
+        }
+        tusciu_eiluciu = 0;
+        try {
+            laik_paz = std::stoi(paz_str);
+            stud.paz.push_back(laik_paz);
+        } catch (...) {
+            cout << "Iveskite skaiciu arba ENTER." << endl;
+        }
+    }
+}
 
 int main() {
+    srand(static_cast<unsigned>(time(0)));
     vector<Studentas> studentai;
-    string ivedimas;
+
     while (true) {
-        Studentas stud;
-        cout << "Iveskite studento varda (arba 'baigti', kad baigtumete ivedima): ";
-        cin >> ivedimas;
-        if (ivedimas == "baigti") {
-            break;
-        }
-        stud.vardas = ivedimas;
-        cout << "Iveskite studento pavarde: ";
-        cin >> stud.pavarde;
-        
-        cout << "Iveskite namu darbu pazymius (spauskite ENTER po kiekvieno pazymio. Ivedus visus pazymius, spauskite '0' ir ENTER arba bet kokia raide ir ENTER):" << endl;
-        int laik_paz;
-        while (cin >> laik_paz && laik_paz != 0) {
-            stud.paz.push_back(laik_paz);
-        }
-        cin.clear();
+        cout << "\nPasirinkite veiksma:\n";
+        cout << "1 - Ivesti studento duomenis rankiniu budu\n";
+        cout << "2 - Generuoti studento duomenis atsitiktinai\n";
+        cout << "0 - Baigti/Rodyti lentelę\n";
+        cout << "Jusu pasirinkimas: ";
+        int pasirinkimas;
+        cin >> pasirinkimas;
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        
-        cout << "Koks egzamino ivertinimas? ";
-        cin >> stud.egz;
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+
+        if (pasirinkimas == 0) break;
+
+        Studentas stud;
+        cout << "Iveskite studento varda: ";
+        std::getline(cin, stud.vardas);
+        cout << "Iveskite studento pavarde: ";
+        std::getline(cin, stud.pavarde);
+
+        if (pasirinkimas == 1) {
+            IvestiPazymius(stud);
+            cout << "Koks egzamino ivertinimas? ";
+            cin >> stud.egz;
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        } else if (pasirinkimas == 2) {
+            generuotiAtsitiktinai(stud);
+            cout << "Sugeneruoti pazymiai: ";
+            for (int p : stud.paz) cout << p << " ";
+            cout << "\nSugeneruotas egzamino balas: " << stud.egz << endl;
+        } else {
+            cout << "Tokio pasirinkimo nera.\n";
+            continue;
+        }
         
         double vid = skaiciuotiVidurki(stud.paz);
         double med = skaiciuotiMediana(stud.paz);
@@ -90,19 +135,19 @@ int main() {
         stud.galMed = 0.4 * med + 0.6 * stud.egz;
         
         studentai.push_back(stud);
-        
-        cout << setw(20) << left << "Vardas"
+    }
+    cout << setw(20) << left << "Vardas"
          << setw(20) << left << "Pavarde"
          << setw(25) << left << "Galutinis (Vid.)"
          << setw(25) << left << "Galutinis (Med.)" << endl;
     cout << string(90, '-') << endl;
-    
+
     for (const auto& stud : studentai) {
         cout << setw(20) << left << stud.vardas
              << setw(20) << left << stud.pavarde
              << setw(25) << left << std::fixed << std::setprecision(2) << stud.galVid
              << setw(25) << left << std::fixed << std::setprecision(2) << stud.galMed << endl;
-    }
+        cout << string(90, '-') << endl;
     }
     
 }
