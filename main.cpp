@@ -13,6 +13,7 @@ using std::endl;
 using std::setw;
 using std::left;
 using std::swap;
+using std::stoi;
 
 struct Studentas {
     string vardas;
@@ -24,21 +25,7 @@ struct Studentas {
 };
 
 void Sort(vector<int>& arr) {
-    int n = arr.size();
-    bool swapped;
-  
-    for (int i = 0; i < n - 1; i++) {
-        swapped = false;
-        for (int j = 0; j < n - i - 1; j++) {
-            if (arr[j] > arr[j + 1]) {
-                swap(arr[j], arr[j + 1]);
-                swapped = true;
-            }
-        }
-      
-        if (!swapped)
-            break;
-    }
+   std::sort(arr.begin(), arr.end());
 }
 
 void RikiuotiStudentus(vector<Studentas>& studentai) {
@@ -87,7 +74,7 @@ void generuotiAtsitiktinai(Studentas& stud) {
 }
 
 void IvestiPazymius(Studentas& stud){
-    cout << "Iveskite namu darbu pazymius (du ENTER is eiles baigia ivedima):" << endl;
+    cout << "Iveskite namu darbu pazymius (du ENTER is eiles baigia ivedima):\n";
     string paz_str;
     int laik_paz;
     int tusciu_eiluciu = 0;
@@ -101,10 +88,10 @@ void IvestiPazymius(Studentas& stud){
         }
         tusciu_eiluciu = 0;
         try {
-            laik_paz = std::stoi(paz_str);
+            laik_paz = stoi(paz_str);
             stud.paz.push_back(laik_paz);
         } catch (...) {
-            cout << "Iveskite skaiciu arba ENTER." << endl;
+            cout << "Iveskite skaiciu arba ENTER.\n";
         }
     }
 }
@@ -116,25 +103,63 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai, const string& failoVardas) 
         cout << "Nepavyko atidaryti failo: " << failoVardas << endl;
         return;
     }
-    string eilute;
-    std::getline(in, eilute); // skip header
-
-    while (std::getline(in, eilute)) {
-        std::istringstream iss(eilute);
+    string vardas, pavarde, eilute;
+    std::getline(in, eilute);
+   
+    while (in >> vardas >> pavarde) {
         Studentas stud;
-        iss >> stud.vardas >> stud.pavarde;
-        int skaicius;
+        stud.vardas = vardas;
+        stud.pavarde = pavarde;
         vector<int> paz;
-        while (iss >> skaicius) paz.push_back(skaicius);
+        int x;
+        while (in.peek() != '\n' && in >> x) paz.push_back(x);
         if (paz.empty()) continue;
         stud.egz = paz.back();
         paz.pop_back();
         stud.paz = paz;
         SkaiciuotiGalutinius(stud);
-        studentai.push_back(stud);
+        studentai.push_back(std::move(stud));
     }
-    in.close();
 }
+
+void Outas_i_faila(const vector<Studentas> studentai){
+    std::ofstream out("rez.txt");
+
+    out << setw(20) << left << "Vardas"
+         << setw(20) << left << "Pavarde"
+         << setw(25) << left << "Galutinis (Vid.)"
+         << setw(25) << left << "Galutinis (Med.)";
+    out << string(90, '-') << "\n";
+    for (const auto& stud : studentai) {
+        out << setw(20) << left << stud.vardas
+             << setw(20) << left << stud.pavarde
+             << setw(25) << left << std::fixed << std::setprecision(2) << stud.galVid
+             << setw(25) << left << std::fixed << std::setprecision(2) << stud.galMed << "\n";
+        out << string(90, '-') << "\n";
+    }
+
+
+
+};
+
+void Outas_i_console(const vector<Studentas> studentai){
+    
+    cout << setw(20) << left << "Vardas"
+         << setw(20) << left << "Pavarde"
+         << setw(25) << left << "Galutinis (Vid.)"
+         << setw(25) << left << "Galutinis (Med.)" << "\n";
+    cout << string(90, '-') << "\n";
+
+    for (const auto& stud : studentai) {
+        cout << setw(20) << left << stud.vardas
+             << setw(20) << left << stud.pavarde
+             << setw(25) << left << std::fixed << std::setprecision(2) << stud.galVid
+             << setw(25) << left << std::fixed << std::setprecision(2) << stud.galMed << "\n";
+        cout << string(90, '-') << "\n";
+    }
+
+    
+};
 
 int main() {
     srand(static_cast<unsigned>(time(0)));
@@ -154,7 +179,7 @@ int main() {
         if (pasirinkimas == 0) break;
 
         if (pasirinkimas == 3) {
-            nuskaitytiIsFailo(studentai, "studentai10000.txt");
+            nuskaitytiIsFailo(studentai, "vardai.txt");
             continue;
         }
 
@@ -173,7 +198,7 @@ int main() {
             generuotiAtsitiktinai(stud);
             cout << "Sugeneruoti pazymiai: ";
             for (int p : stud.paz) cout << p << " ";
-            cout << "\nSugeneruotas egzamino balas: " << stud.egz << endl;
+            cout << "\nSugeneruotas egzamino balas: " << stud.egz << "\n";
         } else {
             cout << "Tokio pasirinkimo nera.\n";
             continue;
@@ -182,20 +207,23 @@ int main() {
         SkaiciuotiGalutinius(stud);
         studentai.push_back(stud);
     }
-    cout << setw(20) << left << "Vardas"
-         << setw(20) << left << "Pavarde"
-         << setw(25) << left << "Galutinis (Vid.)"
-         << setw(25) << left << "Galutinis (Med.)" << endl;
-    cout << string(90, '-') << endl;
+
 
     RikiuotiStudentus(studentai);
-    
-    for (const auto& stud : studentai) {
-        cout << setw(20) << left << stud.vardas
-             << setw(20) << left << stud.pavarde
-             << setw(25) << left << std::fixed << std::setprecision(2) << stud.galVid
-             << setw(25) << left << std::fixed << std::setprecision(2) << stud.galMed << endl;
-        cout << string(90, '-') << endl;
-    }
-    
+
+
+        cout << "Ar įrašyti į failą?" ;
+        cout << "1 - Taip\n";
+        cout << "0 - Ne\n" ;
+        int y;
+        cin >> y;
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        if(y == 1){
+            Outas_i_faila(studentai);
+        }
+
+        else Outas_i_console(studentai);
+
+   
 }
