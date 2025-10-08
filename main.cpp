@@ -95,7 +95,7 @@ void IvestiPazymius(Studentas& stud){
         }
     }
 }
-
+//g
 
 void nuskaitytiIsFailo(vector<Studentas>& studentai, const string& failoVardas) {
     std::ifstream in(failoVardas);
