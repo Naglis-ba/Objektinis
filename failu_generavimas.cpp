@@ -1,21 +1,16 @@
 #include <bits/stdc++.h>
 #include <iostream>
+#include <chrono>
 
 using namespace::std;
 
-void Generuoti_faila(){
-
-
-
-
-};
-
 int main() {
-
+    auto start = std::chrono::high_resolution_clock::now();
+    cout << "startas";
     std::ofstream out("vardai.txt");
     vector<int> paz;
     int egz;
-    int n = 100000;
+    int n = 10000000;
     int paz_sk = 7;
 
     out << "Vardas" << "        " << "Pavarde" << "         " << "ND1"<< "    "<<"ND2"<< "    "<< "ND3"<< "    " << "ND4"<< "    "<<"ND5"<< "    "<< "ND6"<< "  "<<"ND7"<<"     "<<  "Egz"<< endl;
@@ -35,6 +30,7 @@ int main() {
         paz.clear();
     }
 
-
-
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> diff = end - start;
+    std::cout << "Failo generavimas uztruko: " << diff.count() << " s\n";
 }
