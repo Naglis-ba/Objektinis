@@ -23,6 +23,8 @@ using std::stoi;
 int main() {
     srand(static_cast<unsigned>(time(0)));
     vector<Studentas> studentai;
+    vector<Studentas> zem_lyg;
+    vector<Studentas> aukst_lyg;
     studentai.reserve(100000);
     while (true) {
         cout << "\nPasirinkite veiksma:\n";
@@ -69,9 +71,19 @@ int main() {
         SkaiciuotiGalutinius(stud);
         studentai.push_back(stud);
     }
+        cout << "Kaip rikiuoti sudentus?\n";
+        cout << "1 - Pagal vardą \n";
+        cout << "2 - Pagal pažymius \n";
 
-
-        RikiuotiStudentus(studentai);
+        int a;
+        cin >> a;
+        if (a == 1){
+            RikiuotiStudentus_vardas(studentai);
+        }
+        else if(a == 2){
+            RikiuotiStudentus_paz(studentai);
+        }
+       
 
 
         cout << "Ar įrašyti į failą?\n" ;
@@ -80,7 +92,7 @@ int main() {
         int y;
         cin >> y;
 
-        cout << "Ar įrašyti išskirti išlaikiusius ir neišlaikiusius?\n" ;
+        cout << "Ar įrašant išskirti išlaikiusius ir neišlaikiusius?\n" ;
         cout << "1 - Taip\n";
         cout << "0 - Ne\n" ;
         int x;
@@ -88,13 +100,29 @@ int main() {
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         if(y == 1){
-            if(x == 1){
-                Outas_i_du_failus(studentai);
+            if(x == 0){
+                Outas_i_faila(studentai);
             }
-            else Outas_i_faila(studentai);
+            else if(x == 1){
+                Outas_i_du_failus(studentai);
+                skirstymas_pagal_paz(studentai, zem_lyg, aukst_lyg);
+            } 
         }
 
-        else Outas_i_console(studentai);
+        else if (y == 0) {
+            if(x == 0){
+
+                Outas_i_console(studentai);
+
+            } 
+            else if (x == 1) {
+
+                Outas_i_console(zem_lyg);
+                Outas_i_console(aukst_lyg);
+
+            }
+
+        } 
 
    return 0;
 }

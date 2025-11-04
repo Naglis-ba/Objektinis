@@ -16,7 +16,7 @@ void Sort(vector<int>& arr) {
    std::sort(arr.begin(), arr.end());
 }
 
-void RikiuotiStudentus(vector<Studentas>& studentai) {
+void RikiuotiStudentus_paz(vector<Studentas>& studentai) {
     auto start = std::chrono::high_resolution_clock::now();
     std::sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
             return a.galVid > b.galVid;
@@ -24,6 +24,24 @@ void RikiuotiStudentus(vector<Studentas>& studentai) {
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> diff = end - start;
     std::cout << "Rikiavimas uztruko: " << diff.count() << " s\n";
+}
+void RikiuotiStudentus_vardas(vector<Studentas>& studentai) {
+ std::sort(
+        studentai.begin(),
+        studentai.end(),
+        [](const Studentas& a, const Studentas& b) {
+            // Primary Key: Sort by Length (Ascending)
+            size_t len_a = a.vardas.length();
+            size_t len_b = b.vardas.length();
+
+            if (len_a != len_b) {
+               
+                return len_a < len_b;
+            }
+
+            return a.vardas < b.vardas;
+        }
+    );
 }
 
 double skaiciuotiVidurki(const vector<int>& paz) {
@@ -125,6 +143,7 @@ void Outas_i_faila(const std::vector<Studentas> studentai){
          << setw(20) << left << "Pavarde"
          << setw(25) << left << "Galutinis (Vid.)"
          << setw(25) << left << "Galutinis (Med.)";
+    out << "\n";
     out << string(90, '-') << "\n";
     for (const auto& stud : studentai) {
         out << setw(20) << left << stud.vardas
@@ -196,4 +215,17 @@ void Outas_i_du_failus(const vector<Studentas> studentai){
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> diff = end - start;
     std::cout << "Isvedimas uztruko: " << diff.count() << " s\n";
+}
+
+void skirstymas_pagal_paz(const vector<Studentas> studentai, vector<Studentas> &zem_lyg, vector<Studentas> &aukst_lyg){
+
+    for (const auto& stud : studentai) {
+        if (stud.galVid >= 5.0) {
+           aukst_lyg.push_back(std::move(stud));
+    }
+         else {
+           zem_lyg.push_back(std::move(stud));
+        }
+    }
+
 }
