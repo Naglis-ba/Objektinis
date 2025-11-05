@@ -91,12 +91,12 @@ int main() {
        
     }
         cout << "Kaip rikiuoti sudentus?\n";
-        cout << "1 - Pagal vardą \n";
-        cout << "2 - Pagal pažymius \n";
+        cout << "0 - Pagal vardą \n";
+        cout << "1 - Pagal pažymius \n";
 
         int a;
         cin >> a;
-        if (a == 1){
+        if (a == 0){
             if (data == 1) {
 
                 RikiuotiStudentus_vardas(studentai_list);
@@ -108,15 +108,15 @@ int main() {
 
             }
         }
-        else if(a == 2){
+        else if(a == 1){
             if (data == 1) {
 
-                RikiuotiStudentus_vardas(studentai_list);
+                RikiuotiStudentus_paz(studentai_list);
 
             }
             if (data == 0){
 
-                RikiuotiStudentus_vardas(studentai_vec);
+                RikiuotiStudentus_paz(studentai_vec);
 
             }
         }
@@ -151,9 +151,9 @@ int main() {
                 }
             } else {
                 if (data == 1) {
-                    Outas_i_du_failus(studentai_list);
+                    Outas_i_du_failus(zem_lyg_list, aukst_lyg_list);
                 } else {
-                    Outas_i_du_failus(studentai_vec);
+                    Outas_i_du_failus(zem_lyg_vec, aukst_lyg_vec);
                 }
             } 
         } else {

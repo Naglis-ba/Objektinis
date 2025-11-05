@@ -93,7 +93,7 @@ void nuskaitytiIsFailo(Container& studentai, const string& failoVardas) {
     std::cout << "Nuskaitymas uztruko: " << diff.count() << " s\n";
 };
 template <typename Container>
-void Outas_i_faila(const Container studentai){
+void Outas_i_faila(const Container& studentai){
     auto start = std::chrono::high_resolution_clock::now();
     std::ofstream out("rez.txt");
 
@@ -115,7 +115,7 @@ void Outas_i_faila(const Container studentai){
     std::cout << "Isvedimas uztruko: " << diff.count() << " s\n";
 };
 template <typename Container>
-void Outas_i_console(const Container studentai){
+void Outas_i_console(const Container& studentai){
     auto start = std::chrono::high_resolution_clock::now();
     cout << setw(20) << left << "Vardas"
          << setw(20) << left << "Pavarde"
@@ -137,40 +137,40 @@ void Outas_i_console(const Container studentai){
 };
 
 template <typename Container>
-void Outas_i_du_failus(const Container studentai){
+void Outas_i_du_failus(const Container& zem_lyg, const Container& aukst_lyg,
+                        const std::string& varg_file = "vargsiukai.txt",
+                        const std::string& kiet_file = "kietiakai.txt"){
     auto start = std::chrono::high_resolution_clock::now();
-    std::ofstream out1("kietiakai.txt");
-    std::ofstream out2("vargsiukai.txt");
+    std::ofstream out_varg(varg_file);
+    std::ofstream out_kiet(kiet_file);
 
-    out1 << setw(20) << left << "Vardas"
-        << setw(20) << left << "Pavarde"
-        << setw(25) << left << "Galutinis (Vid.)"
-        << setw(25) << left << "Galutinis (Med.)" << "\n";
-    out1 << string(90, '-') << "\n";
+    auto write_header = [](std::ofstream& out){
+        out << setw(20) << left << "Vardas"
+            << setw(20) << left << "Pavarde"
+            << setw(25) << left << "Galutinis (Vid.)"
+            << setw(25) << left << "Galutinis (Med.)" << "\n";
+        out << string(90, '-') << "\n";
+    };
 
-    out2 << setw(20) << left << "Vardas"
-        << setw(20) << left << "Pavarde"
-        << setw(25) << left << "Galutinis (Vid.)"
-        << setw(25) << left << "Galutinis (Med.)" << "\n";
-    out2 << string(90, '-') << "\n";
+    write_header(out_kiet);
+    write_header(out_varg);
 
-
-    for (const auto& stud : studentai) {
-        if (stud.galVid >= 5.0) {
-            out1 << setw(20) << left << stud.vardas
+    for (const auto& stud : aukst_lyg) {
+        out_kiet << setw(20) << left << stud.vardas
                  << setw(20) << left << stud.pavarde
                  << setw(25) << left << std::fixed << std::setprecision(2) << stud.galVid
                  << setw(25) << left << std::fixed << std::setprecision(2) << stud.galMed << "\n";
-            out1 << string(90, '-') << "\n";
+        out_kiet << string(90, '-') << "\n";
     }
-         else {
-            out2 << setw(20) << left << stud.vardas
+
+    for (const auto& stud : zem_lyg) {
+        out_varg << setw(20) << left << stud.vardas
                  << setw(20) << left << stud.pavarde
                  << setw(25) << left << std::fixed << std::setprecision(2) << stud.galVid
                  << setw(25) << left << std::fixed << std::setprecision(2) << stud.galMed << "\n";
-            out2 << string(90, '-') << "\n";
-        }
+        out_varg << string(90, '-') << "\n";
     }
+
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> diff = end - start;
     std::cout << "Isvedimas uztruko: " << diff.count() << " s\n";
@@ -178,7 +178,7 @@ void Outas_i_du_failus(const Container studentai){
 
 
 template <typename Container>
-void skirstymas_pagal_paz(Container& studentai, Container &zem_lyg, Container &aukst_lyg){
+void skirstymas_pagal_paz(Container studentai, Container &zem_lyg, Container &aukst_lyg){
     auto start = std::chrono::high_resolution_clock::now();
     for (auto& stud : studentai) {
         if (stud.galVid >= 5.0) {
@@ -187,7 +187,6 @@ void skirstymas_pagal_paz(Container& studentai, Container &zem_lyg, Container &a
            zem_lyg.push_back(std::move(stud));
         }
     }
-    studentai.clear(); // Clear the source container since we moved all elements
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> diff = end - start;
     std::cout << "Studentai surušiuoti per: " << diff.count() << " s\n";
