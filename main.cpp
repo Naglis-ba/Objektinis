@@ -23,6 +23,7 @@ using std::stoi;
 
 int main() {
     srand(static_cast<unsigned>(time(0)));
+    auto start = std::chrono::high_resolution_clock::now();
     int data;
     cout << "Pasirinkite duomenų struktūrą: \n";
     cout << "0 - vector \n";
@@ -81,13 +82,17 @@ int main() {
             continue;
         }
         
-        SkaiciuotiGalutinius(stud);
-        if (data == 1){
-                studentai_list.push_back(stud);
-            } 
-        else {
-                studentai_vec.push_back(stud);
-        }
+    SkaiciuotiGalutinius(stud);
+    if (data == 1){
+        studentai_list.push_back(stud);
+        const void* addr = static_cast<const void*>(&studentai_list.back());
+        cout << "Objekto adresas konteineryje: " << addr << "\n";
+        } 
+    else {
+        studentai_vec.push_back(stud);
+        const void* addr = static_cast<const void*>(&studentai_vec.back());
+        cout << "Objekto adresas konteineryje: " << addr << "\n";
+    }
        
     }
         cout << "Kaip rikiuoti sudentus?\n";
@@ -177,6 +182,8 @@ int main() {
                 }
             }
         }
-
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> diff = end - start;
+    std::cout << "Programa dirbo: " << diff.count() << " s\n";
    return 0;
 }
