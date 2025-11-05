@@ -1,3 +1,4 @@
+#include "studentas.h"
 #include <iostream>
 #include <iomanip>
 #include <vector>
@@ -6,7 +7,7 @@
 #include <algorithm>   
 #include <sstream> 
 #include <fstream>
-#include "studentas.h"
+#include <list>
 #include "funkcijos.h"
 
 using std::cout;
@@ -22,10 +23,17 @@ using std::stoi;
 
 int main() {
     srand(static_cast<unsigned>(time(0)));
-    vector<Studentas> studentai;
-    vector<Studentas> zem_lyg;
-    vector<Studentas> aukst_lyg;
-    studentai.reserve(100000);
+    int data;
+    cout << "Pasirinkite duomenų struktūrą: \n";
+    cout << "0 - vector \n";
+    cout << "1 - list \n";
+    cin >> data;
+        vector<Studentas> studentai_vec;
+        vector<Studentas> zem_lyg_vec;
+        vector<Studentas> aukst_lyg_vec;
+        std::list<Studentas> studentai_list;
+        std::list<Studentas> zem_lyg_list;
+        std::list<Studentas> aukst_lyg_list;
     while (true) {
         cout << "\nPasirinkite veiksma:\n";
         cout << "1 - Ivesti studento duomenis rankiniu budu\n";
@@ -43,7 +51,12 @@ int main() {
             cout << "Failo pavadinimas: ";
             string failo_vardas;
             cin >> failo_vardas;
-            nuskaitytiIsFailo(studentai, failo_vardas); 
+            if (data == 1){
+                nuskaitytiIsFailo(studentai_list, failo_vardas);
+            } 
+            else {
+                nuskaitytiIsFailo(studentai_vec, failo_vardas);
+            }
             continue;
         }
 
@@ -69,7 +82,13 @@ int main() {
         }
         
         SkaiciuotiGalutinius(stud);
-        studentai.push_back(stud);
+        if (data == 1){
+                studentai_list.push_back(stud);
+            } 
+        else {
+                studentai_vec.push_back(stud);
+        }
+       
     }
         cout << "Kaip rikiuoti sudentus?\n";
         cout << "1 - Pagal vardą \n";
@@ -78,10 +97,28 @@ int main() {
         int a;
         cin >> a;
         if (a == 1){
-            RikiuotiStudentus_vardas(studentai);
+            if (data == 1) {
+
+                RikiuotiStudentus_vardas(studentai_list);
+
+            }
+            if (data == 0){
+
+                RikiuotiStudentus_vardas(studentai_vec);
+
+            }
         }
         else if(a == 2){
-            RikiuotiStudentus_paz(studentai);
+            if (data == 1) {
+
+                RikiuotiStudentus_vardas(studentai_list);
+
+            }
+            if (data == 0){
+
+                RikiuotiStudentus_vardas(studentai_vec);
+
+            }
         }
        
 
@@ -101,24 +138,56 @@ int main() {
 
         if(y == 1){
             if(x == 0){
-                Outas_i_faila(studentai);
+                if (data == 1) {
+
+                Outas_i_faila(studentai_list);
+
+                }
+                if (data == 0){
+
+                Outas_i_faila(studentai_vec);
+
+                }
             }
             else if(x == 1){
-                Outas_i_du_failus(studentai);
-                skirstymas_pagal_paz(studentai, zem_lyg, aukst_lyg);
+                if (data == 1) {
+                    Outas_i_du_failus(studentai_list);
+                    skirstymas_pagal_paz(studentai_list, zem_lyg_list, aukst_lyg_list);
+                }
+                if (data == 0){
+                    Outas_i_du_failus(studentai_vec);
+                    skirstymas_pagal_paz(studentai_vec, zem_lyg_vec, aukst_lyg_vec);
+                }
             } 
         }
 
         else if (y == 0) {
             if(x == 0){
+                if (data == 1) {
 
-                Outas_i_console(studentai);
+                Outas_i_console(studentai_list);
+
+                }
+                if (data == 0){
+
+                Outas_i_console(studentai_vec);
+
+                }
 
             } 
             else if (x == 1) {
+                if (data == 1) {
 
-                Outas_i_console(zem_lyg);
-                Outas_i_console(aukst_lyg);
+                Outas_i_console(zem_lyg_list);
+                Outas_i_console(aukst_lyg_list);
+
+                }
+                if (data == 0){
+
+                Outas_i_console(zem_lyg_vec);
+                Outas_i_console(aukst_lyg_vec);
+
+                }
 
             }
 

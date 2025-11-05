@@ -10,3 +10,4 @@ struct Studentas {
     double galVid;
     double galMed;
 };
+
