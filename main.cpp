@@ -121,77 +121,62 @@ int main() {
             }
         }
        
+        cout << "Ar išskirti išlaikiusius ir neišlaikiusius?\n" ;
+        cout << "1 - Taip\n";
+        cout << "0 - Ne\n" ;
+        int x;
+        cin >> x;
 
+        if(x == 1) {
+            if (data == 1) {
+                skirstymas_pagal_paz(studentai_list, zem_lyg_list, aukst_lyg_list);
+            } else {
+                skirstymas_pagal_paz(studentai_vec, zem_lyg_vec, aukst_lyg_vec);
+            }
+        }
 
         cout << "Ar įrašyti į failą?\n" ;
         cout << "1 - Taip\n";
         cout << "0 - Ne\n" ;
         int y;
         cin >> y;
-
-        cout << "Ar įrašant išskirti išlaikiusius ir neišlaikiusius?\n" ;
-        cout << "1 - Taip\n";
-        cout << "0 - Ne\n" ;
-        int x;
-        cin >> x;
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-        if(y == 1){
-            if(x == 0){
+        if(y == 1) {
+            if(x == 0) {
                 if (data == 1) {
-
-                Outas_i_faila(studentai_list);
-
+                    Outas_i_faila(studentai_list);
+                } else {
+                    Outas_i_faila(studentai_vec);
                 }
-                if (data == 0){
-
-                Outas_i_faila(studentai_vec);
-
-                }
-            }
-            else if(x == 1){
+            } else {
                 if (data == 1) {
                     Outas_i_du_failus(studentai_list);
-                    skirstymas_pagal_paz(studentai_list, zem_lyg_list, aukst_lyg_list);
-                }
-                if (data == 0){
+                } else {
                     Outas_i_du_failus(studentai_vec);
-                    skirstymas_pagal_paz(studentai_vec, zem_lyg_vec, aukst_lyg_vec);
                 }
             } 
-        }
-
-        else if (y == 0) {
-            if(x == 0){
+        } else {
+            if(x == 0) {
                 if (data == 1) {
-
-                Outas_i_console(studentai_list);
-
+                    Outas_i_console(studentai_list);
+                } else {
+                    Outas_i_console(studentai_vec);
                 }
-                if (data == 0){
-
-                Outas_i_console(studentai_vec);
-
-                }
-
-            } 
-            else if (x == 1) {
+            } else {
                 if (data == 1) {
-
-                Outas_i_console(zem_lyg_list);
-                Outas_i_console(aukst_lyg_list);
-
+                    cout << "\nNeišlaikę studentai:\n";
+                    Outas_i_console(zem_lyg_list);
+                    cout << "\nIšlaikę studentai:\n";
+                    Outas_i_console(aukst_lyg_list);
+                } else {
+                    cout << "\nNeišlaikę studentai:\n";
+                    Outas_i_console(zem_lyg_vec);
+                    cout << "\nIšlaikę studentai:\n";
+                    Outas_i_console(aukst_lyg_vec);
                 }
-                if (data == 0){
-
-                Outas_i_console(zem_lyg_vec);
-                Outas_i_console(aukst_lyg_vec);
-
-                }
-
             }
-
-        } 
+        }
 
    return 0;
 }

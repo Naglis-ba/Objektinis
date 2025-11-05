@@ -40,8 +40,8 @@ void RikiuotiStudentus_paz(Container& studentai) {
 }
 template <typename Container>
 void RikiuotiStudentus_vardas(Container& studentai) {
+    auto start = std::chrono::high_resolution_clock::now();
     auto comparator = [](const Studentas& a, const Studentas& b) {
-        // Primary Key: Sort by Length (Ascending)
         size_t len_a = a.vardas.length();
         size_t len_b = b.vardas.length();
 
@@ -57,6 +57,10 @@ void RikiuotiStudentus_vardas(Container& studentai) {
     } else {
         std::sort(studentai.begin(), studentai.end(), comparator);
     }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> diff = end - start;
+    std::cout << "Rikiavimas uztruko: " << diff.count() << " s\n";
 }
 template <typename Container>
 void nuskaitytiIsFailo(Container& studentai, const string& failoVardas) {
@@ -171,17 +175,21 @@ void Outas_i_du_failus(const Container studentai){
     std::chrono::duration<double> diff = end - start;
     std::cout << "Isvedimas uztruko: " << diff.count() << " s\n";
 }
-template <typename Container>
-void skirstymas_pagal_paz(const Container studentai, Container &zem_lyg, Container &aukst_lyg){
 
-    for (const auto& stud : studentai) {
+
+template <typename Container>
+void skirstymas_pagal_paz(Container& studentai, Container &zem_lyg, Container &aukst_lyg){
+    auto start = std::chrono::high_resolution_clock::now();
+    for (auto& stud : studentai) {
         if (stud.galVid >= 5.0) {
            aukst_lyg.push_back(std::move(stud));
-    }
-         else {
+        } else {
            zem_lyg.push_back(std::move(stud));
         }
     }
-
+    studentai.clear(); // Clear the source container since we moved all elements
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> diff = end - start;
+    std::cout << "Studentai surušiuoti per: " << diff.count() << " s\n";
 }
 
