@@ -1,8 +1,29 @@
 # Objektinis
-v0.3
-Programa:
+
+
+## Paleidimo Instrukcija
+
+WSL:Ubuntu
+    (Būnant programos direktorijoje)
+    cmake CMakeLists.txt
+    cmake --install .
+    cmake --build .
+    ./Objektinis_v1.0
+
+
+    Sekti instrukcijas
+    Standartinis failo vardas: studentai.txt
+
+
+
+## Programa
     Programa skirta skaičiuoti mokinių pažymių vidurkius ir gauti rezultatus pasirinktu formatu.
-    Programoje yra galimybė įvesti mokinį ir jo rezultatus sugeneruoti mokinio balus, taip pat skaityti mokinių sąrašą iš failo.
+    Programoje yra galimybė įvesti mokinį ir jo rezultatus, sugeneruoti mokinio balus, taip pat skaityti mokinių sąrašą iš failo.
+
+
+
+
+v0.3
 
 Tikslas:
     0.3 versija skirta palyginti C++ kalbos duomenų struktūrų list ir vector spartą apdorojant didelius kiekius duomenų.
