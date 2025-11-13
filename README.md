@@ -137,3 +137,15 @@ Rušiavimas su Vector: 98.6134 s
 
 1 ir 2 strategijose Vector konteineris veikia daug lėčiau negu List, kadangi Vector ištrynimo O(n),
 o List O(1). Antra strategija naudojant List greičiausia
+
+
+3 Strategija:
+    Implementuota atskiros funkcijos vector is list konteinerių tipams.
+        Vector:
+            konteinerio atveju, kviečiama funkcija skirstymas_pagal_paz_vector, kuri veikia stable_partition() algoritmo pagalba, kuris suskirsto visus studentus turinčius <5 vidurkį į pradžią vektoriaus ir paima ribą iki kurios vietos perkelti į kitus vektorius.
+        Rūšiavimo laikas: 0.108211 s
+
+
+        List:
+            konteinerio atveju, kviečiama funkcija skirstymas_pagal_paz_list, kuri ištrina studentus su <5 vidurkiu iš studentai list ir perkelia juos į kitą  list zem_lyg
+        Rūšiavimo laikas: 0.025946 s
