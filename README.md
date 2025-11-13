@@ -122,10 +122,11 @@ Iš testavimo galima matyti, kad list struktūra atlieka operacijas kaip rikiavi
 
 v1.0 :
 
+Visi testai daryti su 100000 įrašų.
+
 1 Strategija:
 Iš v0.3 tyrimo matome, kad List konteineris veikia sparčiau negu Vector konteineris
 
-su 100000 studentų
 Rušiavimas su List: 0.0434585 s 0.0409563 s 
 Rušiavimas su Vector: 0.0520665 s
 
