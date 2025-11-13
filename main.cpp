@@ -101,89 +101,60 @@ int main() {
 
         int a;
         cin >> a;
-        if (a == 0){
-            if (data == 1) {
-
-                RikiuotiStudentus_vardas(studentai_list);
-
-            }
-            if (data == 0){
-
-                RikiuotiStudentus_vardas(studentai_vec);
-
-            }
+        if (a != 0 && a != 1) {
+            cout << "Neteisingas pasirinkimas. Programa baigiama.\n";
+            return 1;
         }
-        else if(a == 1){
-            if (data == 1) {
-
-                RikiuotiStudentus_paz(studentai_list);
-
-            }
-            if (data == 0){
-
-                RikiuotiStudentus_paz(studentai_vec);
-
-            }
+        if (data == 1){
+            Rikiavimas_output(a, data, studentai_list);
+        }
+        else {
+            Rikiavimas_output(a, data, studentai_vec);
         }
        
+
         cout << "Ar išskirti išlaikiusius ir neišlaikiusius?\n" ;
         cout << "1 - Taip\n";
         cout << "0 - Ne\n" ;
-        int x;
-        cin >> x;
-
-        if(x == 1) {
-            if (data == 1) {
-                skirstymas_pagal_paz(studentai_list, zem_lyg_list, aukst_lyg_list);
-            } else {
-                skirstymas_pagal_paz(studentai_vec, zem_lyg_vec, aukst_lyg_vec);
+        int iskyrimas;
+        cin >> iskyrimas;
+        int strat = 0;
+        if (iskyrimas == 1){
+            cout << "strategija?\n";
+            cout << "0 - Pirma\n";
+            cout << "1 - Antra\n";
+            cin >> strat;
+        }
+        
+        if(strat == 0) {
+            if(iskyrimas == 1) {
+                if (data == 1) {
+                    skirstymas_pagal_paz(studentai_list, zem_lyg_list, aukst_lyg_list);
+                } else {
+                    skirstymas_pagal_paz(studentai_vec, zem_lyg_vec, aukst_lyg_vec);
+                }
+            }
+        } else if(strat == 1) {
+            if(iskyrimas == 1) {
+                if (data == 1) {
+                    skirstymas_pagal_paz_2_strat(studentai_list, zem_lyg_list);
+                } else {
+                    skirstymas_pagal_paz_2_strat(studentai_vec, zem_lyg_vec);
+                }
             }
         }
-
         cout << "Ar įrašyti į failą?\n" ;
         cout << "1 - Taip\n";
         cout << "0 - Ne\n" ;
-        int y;
-        cin >> y;
+        int i_faila;
+        cin >> i_faila;
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-        if(y == 1) {
-            if(x == 0) {
-                if (data == 1) {
-                    Outas_i_faila(studentai_list);
-                } else {
-                    Outas_i_faila(studentai_vec);
-                }
-            } else {
-                if (data == 1) {
-                    Outas_i_du_failus(zem_lyg_list, aukst_lyg_list);
-                } else {
-                    Outas_i_du_failus(zem_lyg_vec, aukst_lyg_vec);
-                }
-            } 
-        } else {
-            if(x == 0) {
-                if (data == 1) {
-                    Outas_i_console(studentai_list);
-                } else {
-                    Outas_i_console(studentai_vec);
-                }
-            } else {
-                if (data == 1) {
-                    cout << "\nNeišlaikę studentai:\n";
-                    Outas_i_console(zem_lyg_list);
-                    cout << "\nIšlaikę studentai:\n";
-                    Outas_i_console(aukst_lyg_list);
-                } else {
-                    cout << "\nNeišlaikę studentai:\n";
-                    Outas_i_console(zem_lyg_vec);
-                    cout << "\nIšlaikę studentai:\n";
-                    Outas_i_console(aukst_lyg_vec);
-                }
-            }
+        if (data == 1) {
+            handle_output(i_faila, iskyrimas, strat, studentai_list, zem_lyg_list, aukst_lyg_list);
+        } 
+        else {
+            handle_output(i_faila, iskyrimas, strat, studentai_vec, zem_lyg_vec, aukst_lyg_vec);
         }
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> diff = end - start;
-    std::cout << "Programa dirbo: " << diff.count() << " s\n";
+
    return 0;
 }

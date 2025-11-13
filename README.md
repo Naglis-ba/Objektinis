@@ -1,5 +1,5 @@
 # Objektinis
-
+v0.3
 Programa:
     Programa skirta skaičiuoti mokinių pažymių vidurkius ir gauti rezultatus pasirinktu formatu.
     Programoje yra galimybė įvesti mokinį ir jo rezultatus sugeneruoti mokinio balus, taip pat skaityti mokinių sąrašą iš failo.
@@ -117,3 +117,23 @@ Testavimas:
 
 Rezultatai:
 Iš testavimo galima matyti, kad list struktūra atlieka operacijas kaip rikiavimas ir rūšiavimas sparčiau negu vector struktūra. Kiti parametrai, kaip failų nuskaitymas ir išvedimas į failus, nežymiai spartesni su list struktūra, skirtumas išryškėja didėjant duomenų kiekiui
+
+
+
+v1.0 :
+
+1 Strategija:
+Iš v0.3 tyrimo matome, kad List konteineris veikia sparčiau negu Vector konteineris
+
+su 100000 studentų
+Rušiavimas su List: 0.0434585 s 0.0409563 s 
+Rušiavimas su Vector: 0.0520665 s
+
+2 Strategija:
+
+Rikiuojant pagal paz:
+Rušiavimas su List: 0.0255668 s 0.0238579 s
+Rušiavimas su Vector: 98.6134 s 
+
+1 ir 2 strategijose Vector konteineris veikia daug lėčiau negu List, kadangi Vector ištrynimo O(n),
+o List O(1). Antra strategija naudojant List greičiausia

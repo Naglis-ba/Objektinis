@@ -176,6 +176,46 @@ void Outas_i_du_failus(const Container& zem_lyg, const Container& aukst_lyg,
     std::cout << "Isvedimas uztruko: " << diff.count() << " s\n";
 }
 
+template <typename Container>
+void Outas_i_du_failus_strat_2(const Container& zem_lyg, const Container& studentai,
+                        const std::string& varg_file = "vargsiukai.txt",
+                        const std::string& kiet_file = "kietiakai.txt"){
+    auto start = std::chrono::high_resolution_clock::now();
+    std::ofstream out_varg(varg_file);
+    std::ofstream out_kiet(kiet_file);
+
+    auto write_header = [](std::ofstream& out){
+        out << setw(20) << left << "Vardas"
+            << setw(20) << left << "Pavarde"
+            << setw(25) << left << "Galutinis (Vid.)"
+            << setw(25) << left << "Galutinis (Med.)" << "\n";
+        out << string(90, '-') << "\n";
+    };
+
+    write_header(out_kiet);
+    write_header(out_varg);
+
+    for (const auto& stud : studentai) {
+        out_kiet << setw(20) << left << stud.vardas
+                 << setw(20) << left << stud.pavarde
+                 << setw(25) << left << std::fixed << std::setprecision(2) << stud.galVid
+                 << setw(25) << left << std::fixed << std::setprecision(2) << stud.galMed << "\n";
+        out_kiet << string(90, '-') << "\n";
+    }
+
+    for (const auto& stud : zem_lyg) {
+        out_varg << setw(20) << left << stud.vardas
+                 << setw(20) << left << stud.pavarde
+                 << setw(25) << left << std::fixed << std::setprecision(2) << stud.galVid
+                 << setw(25) << left << std::fixed << std::setprecision(2) << stud.galMed << "\n";
+        out_varg << string(90, '-') << "\n";
+    }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> diff = end - start;
+    std::cout << "Isvedimas uztruko: " << diff.count() << " s\n";
+}
+
 
 template <typename Container>
 void skirstymas_pagal_paz(Container studentai, Container &zem_lyg, Container &aukst_lyg){
@@ -192,3 +232,76 @@ void skirstymas_pagal_paz(Container studentai, Container &zem_lyg, Container &au
     std::cout << "Studentai surušiuoti per: " << diff.count() << " s\n";
 }
 
+template <typename Container>
+void skirstymas_pagal_paz_2_strat(Container &studentai, Container &zem_lyg){
+    auto start = std::chrono::high_resolution_clock::now();
+    for (auto it = studentai.begin(); it != studentai.end(); ) {
+        if (it->galVid <= 5.0) {
+            zem_lyg.push_back(std::move(*it));
+            it = studentai.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> diff = end - start;
+    std::cout << "Studentai surušiuoti per: " << diff.count() << " s\n";
+}
+
+template <typename Container>
+void Rikiavimas_output(int sort_type, int data, Container& studentai){
+
+        if (sort_type == 0){  //rikiavimas pagal varda
+            if (data == 1) {
+
+                RikiuotiStudentus_vardas(studentai);
+
+            }
+            if (data == 0){
+
+                RikiuotiStudentus_vardas(studentai);
+
+            }
+        }
+        else if(sort_type == 1){ //rikiavimas pagal pazymius
+            if (data == 1) {
+
+                RikiuotiStudentus_paz(studentai);
+
+            }
+            if (data == 0){
+
+                RikiuotiStudentus_paz(studentai);
+
+            }
+        }
+}
+
+template <typename Container>
+void handle_output(int i_faila, int iskyrimas, int strat,
+                   const Container& main_container,
+                   const Container& zem_container,
+                   const Container& aukst_container) {
+    if (i_faila == 1) {  // rasyti į failą
+        if (iskyrimas == 0) { // Neatskirta
+            Outas_i_faila(main_container); // Outinam visus studentus
+        } else if (strat == 0) {
+            Outas_i_du_failus(zem_container, aukst_container); // pirma strategija
+        } else if (strat == 1) {
+            Outas_i_du_failus(zem_container, main_container);  // antra strategija
+        }
+    } else {  // nerasyti į failą, rodyti konsolėje
+        if (iskyrimas == 0) { // Neatskirta
+            Outas_i_console(main_container);
+        } else if (strat == 0) { //pirma strategija
+            cout << "\nNeišlaikę studentai:\n";
+            Outas_i_console(zem_container);
+            cout << "\nIšlaikę studentai:\n";
+            Outas_i_console(aukst_container);
+        } else if (strat == 1) { //antra strategija
+            cout << "\nNeišlaikę studentai (Strategy 1):\n";
+            Outas_i_console(zem_container);
+            Outas_i_console(main_container); 
+        }
+    }
+}
